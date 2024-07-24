@@ -8,25 +8,21 @@ const songFiles = {
   'ncs': [
     'Dekha Tenu Pehli Pehli.mp3',
     'Ek Hazaron Mein-Shreya.mp3',
-    '_Raghupati Raghav.mp3'
+    '_Raghupati Raghav.mp3',
+    'Maai Ni Maai.mp3',
+    'The Devi Mashup Navratri.mp3',
+    
     // Add all your songs here
   ],
   'cs': [
     'Avadh Mein Raghurai.mp3',
     '_Raghupati Raghav.mp3',
-    // Add all your songs here
-  ],
-  'Songs3': [
     'Maai Ni Maai.mp3',
-    'Ve Haniya.mp3',
-    '_Raghupati Raghav.mp3',
+   'Woh Shri Ram Hain.mp3',
+   'Teri Baaton Mein Aisa Uljha Jiya.mp3'
     // Add all your songs here
   ],
-  'Songs4': [
-    'Ve Haniya.mp3',
-    'Avadh Mein Raghurai.mp3',
-    // Add all your songs here
-  ]
+  
 };
 
 function secondsToMinuteSeconds(seconds, useDoubleColons = false) {
@@ -45,13 +41,13 @@ function secondsToMinuteSeconds(seconds, useDoubleColons = false) {
 
 function getSongs(folder) {
   currFolder = folder;
-  songs = songFiles[folder];
+  songs = songFiles[folder] || [];
+  console.log(`Loading songs from folder: ${currFolder}`, songs);
 
   let songUL = document.querySelector(".songList").getElementsByTagName("ul")[0];
   songUL.innerHTML = "";
   for (const song of songs) {
-    songUL.innerHTML = songUL.innerHTML + `<li>
-    
+    songUL.innerHTML += `<li>
             <img class="invert" src="music.svg" alt="">
             <div class="info">
               <div>${song.replaceAll("%20", " ")}</div>
@@ -59,13 +55,12 @@ function getSongs(folder) {
             </div>
             <div class="playnow">
               <span>Play Now</span>
-            <img class="invert" src="play.svg" alt="">
+              <img class="invert" src="play.svg" alt="">
             </div>
             </li>`;
   }
   Array.from(document.querySelector(".songList").getElementsByTagName("li")).forEach(e => {
-    e.addEventListener("click", element => {
-      console.log(e.querySelector(".info").firstElementChild.innerHTML);
+    e.addEventListener("click", () => {
       playMusic(e.querySelector(".info").firstElementChild.innerHTML.trim());
     });
   });
@@ -82,6 +77,7 @@ const playMusic = async (track, pause = false) => {
       throw new Error('Track not found');
     }
     currentSong.src = trackPath;
+    console.log(`Playing track: ${trackPath}`);
   } catch (error) {
     console.warn(`Could not find ${track}, playing default track instead.`);
     currentSong.src = defaultTrack;
@@ -100,6 +96,10 @@ async function main() {
   getSongs("ncs");
 
   playMusic(songs[0], true);
+
+  const play = document.querySelector("#play");
+  const previous = document.querySelector("#previous");
+  const next = document.querySelector("#next");
 
   play.addEventListener("click", () => {
     if (currentSong.paused) {
@@ -136,19 +136,24 @@ async function main() {
   previous.addEventListener("click", () => {
     currentSong.pause();
     console.log("Previous clicked");
-    let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0]);
+    let index = songs.indexOf(currentSong.src.split("/").pop());
+    console.log("Current index:", index);
     if ((index - 1) >= 0) {
       playMusic(songs[index - 1]);
+    } else {
+      console.log("No previous song available.");
     }
   });
 
   next.addEventListener("click", () => {
     currentSong.pause();
     console.log("Next clicked");
-
-    let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0]);
+    let index = songs.indexOf(currentSong.src.split("/").pop());
+    console.log("Current index:", index);
     if ((index + 1) < songs.length) {
       playMusic(songs[index + 1]);
+    } else {
+      console.log("No next song available.");
     }
   });
 
