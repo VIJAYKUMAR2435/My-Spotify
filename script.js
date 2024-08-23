@@ -2,6 +2,7 @@ console.log('Lets write javascript');
 let currentSong = new Audio();
 let songs = [];
 let currFolder = 'ncs';
+let currentIndex = 0; // Track the current song index
 
 // Manually list the songs
 const songFiles = {
@@ -11,18 +12,14 @@ const songFiles = {
     '_Raghupati Raghav.mp3',
     'Maai Ni Maai.mp3',
     'The Devi Mashup Navratri.mp3',
-    
-    // Add all your songs here
   ],
   'cs': [
     'Avadh Mein Raghurai.mp3',
-    '_Raghupati Raghav.mp3',
+    'Ve Haniya.mp3',
     'Maai Ni Maai.mp3',
-   'Woh Shri Ram Hain.mp3',
-   'Teri Baaton Mein Aisa Uljha Jiya.mp3'
-    // Add all your songs here
+    'Woh Shri Ram Hain.mp3',
+    'Teri Baaton Mein Aisa Uljha Jiya.mp3'
   ],
-  
 };
 
 function secondsToMinuteSeconds(seconds, useDoubleColons = false) {
@@ -136,25 +133,15 @@ async function main() {
   previous.addEventListener("click", () => {
     currentSong.pause();
     console.log("Previous clicked");
-    let index = songs.indexOf(currentSong.src.split("/").pop());
-    console.log("Current index:", index);
-    if ((index - 1) >= 0) {
-      playMusic(songs[index - 1]);
-    } else {
-      console.log("No previous song available.");
-    }
+    currentIndex = (currentIndex - 1 + songs.length) % songs.length;
+    playMusic(songs[currentIndex]);
   });
 
   next.addEventListener("click", () => {
     currentSong.pause();
     console.log("Next clicked");
-    let index = songs.indexOf(currentSong.src.split("/").pop());
-    console.log("Current index:", index);
-    if ((index + 1) < songs.length) {
-      playMusic(songs[index + 1]);
-    } else {
-      console.log("No next song available.");
-    }
+    currentIndex = (currentIndex + 1) % songs.length;
+    playMusic(songs[currentIndex]);
   });
 
   document.querySelector(".range").getElementsByTagName("input")[0].addEventListener("change", (e) => {
@@ -163,8 +150,6 @@ async function main() {
   });
 
   document.querySelector(".volume>img").addEventListener("click", (e) => {
-    console.log(e.target);
-    console.log("changing", e.target.src);
     if (e.target.src.includes("volume.svg")) {
       e.target.src = e.target.src.replace("volume.svg", "mute.svg");
       currentSong.volume = 0;
@@ -180,6 +165,7 @@ async function main() {
     e.addEventListener("click", async item => {
       songs = await getSongs(item.currentTarget.dataset.folder);
       playMusic(songs[0], true);
+      currentIndex = 0; // Reset the index when a new folder is selected
     });
   });
 }
