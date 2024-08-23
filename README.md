@@ -1,6 +1,6 @@
-# Spotify_clone
+# My-Spotify
 Overview:
-Spotify 2.0 is a modern, responsive web player that allows users to explore and enjoy a variety of playlists. Built using HTML, CSS, and JavaScript, the application is designed to seamlessly adapt to both desktop and mobile devices, providing an optimal user experience.
+Spotify is a modern, responsive web player that allows users to explore and enjoy a variety of playlists. Built using HTML, CSS, and JavaScript, the application is designed to seamlessly adapt to both desktop and mobile devices, providing an optimal user experience.
 
 Features
 1.Navigation and Library
@@ -53,3 +53,5 @@ Volume control with a slider for personalized audio levels.
 
 **Conclusion**
 Spotify 2.0 offers an immersive music streaming experience, combining a sleek design with responsive functionality. Whether you're on a desktop or a mobile device, enjoy the world of music effortlessly. Explore playlists, discover new tracks, and create the perfect soundtrack for every moment. Welcome to the next level of Spotify's web player!
+
+![Screenshot (170)](https://github.com/user-attachments/assets/7dbdd364-8851-41c2-9e28-71ac82d00dbc)
